@@ -7,11 +7,11 @@ class Variable
 {
 private:
     string name;
-    string value;
+    int value;
+
 public:
-    Variable(string name) {}
-    virtual ~Variable() {}
+    Variable(string name);
     string get_name() const;
-    string get_value() const;
-    void set_value(string value);
+    int get_value() const;
+    void set_value(int value);
 };

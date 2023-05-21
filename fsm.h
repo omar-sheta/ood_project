@@ -9,14 +9,19 @@ using namespace std;
 class FSM
 {
 private:
+    string name;
     vector<shared_ptr<State>> states;
     vector<shared_ptr<Transition>> transitions;
+    vector<shared_ptr<Variable>> variables;
     shared_ptr<State> current_state;
 
 public:
-    FSM() {}
+    FSM();
+    ~FSM();
+    FSM(string name, vector<shared_ptr<State>> states, vector<shared_ptr<Transition>> transitions, vector<shared_ptr<Variable>> variables, shared_ptr<State> current_state);
     void add_state(shared_ptr<State> state);
     void add_transition(shared_ptr<Transition> transition);
+    vector<shared_ptr<State>> get_states();
     void set_current_state(shared_ptr<State> state);
     void execute_next_step();
 };

@@ -1,29 +1,24 @@
 #include <fstream>
 #include <iostream>
 #include "Parser.h"
-#include "Transition.h"
-#include "State.h"
-#include "FsmFactory.h"
-#include "Operation.h"
-#include "Variable.h"
 #include <string>
 #include <sstream>
 #include <vector>
-
+#include <algorithm>
 
 Parser::Parser(string filename) : filename(filename) {}
 
-
-vector<string> split(const string &s, char delimiter) {
+vector<string> split(const string &s, char delimiter)
+{
     vector<string> tokens;
     string token;
     istringstream tokenStream(s);
-    while (getline(tokenStream, token, delimiter)) {
+    while (getline(tokenStream, token, delimiter))
+    {
         tokens.push_back(token);
     }
     return tokens;
 }
-
 
 FSM Parser::get_fsm()
 {
@@ -35,8 +30,7 @@ FSM Parser::get_fsm()
     shared_ptr<State> initial_state;
 
     shared_ptr<Operation> operation;
-    vector<shared_ptr<Variable>> variables; 
-
+    vector<shared_ptr<Variable>> variables;
 
     string fsm_name;
 
@@ -46,12 +40,14 @@ FSM Parser::get_fsm()
     // read the file line by line
     string line;
 
-
     int ln = 0;
+    bool inStatesSection = false;
+    bool inTransitionsSection = false;
 
     while (getline(file, line))
     {
-        if (ln == 0){
+        if (ln == 0)
+        {
             // find FSM name
             int pos = line.find("FSM");
             if (pos != string::npos)
@@ -67,7 +63,8 @@ FSM Parser::get_fsm()
                 exit(1);
             }
         }
-        else if (ln == 1){
+        else if (ln == 1)
+        {
             // check if this line is variable declaration
             int pos = line.find("VAR");
             // variable declaration found
@@ -81,7 +78,7 @@ FSM Parser::get_fsm()
                 line.erase(remove_if(line.begin(), line.end(), ::isspace), line.end());
                 // split the line by comma
                 vector<string> extracted_variables = split(line, ',');
-    
+
                 // create a vector of shared_ptr of Variable
                 for (const auto &variable : extracted_variables)
                 {
@@ -95,75 +92,98 @@ FSM Parser::get_fsm()
                 cout << "VAR not found" << endl;
                 exit(1);
             }
-
         }
 
-            // now parse states
-            /*
-            States:
+        // now parse states
+        /*
+        States:
 a: PRINT “state A”, X=X+1, sleep 10, wait
 b: PRINT “state B”, Y=Y+1, sleep 10, wait
 c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
 
-            */
+        */
 
-        else if (ln == 2){
-        //  search for States:
-        // check if this line contains States:
-        int pos = line.find("States:");
-        // check if this line contains States:
-        if (pos != string::npos){
-            // get next line
-            getline(file, line);
-            
-            // line is now "a: PRINT “state A”, X=X+1, sleep 10, wait"
-            // first one is the state name
+        if (line.find("States:") != string::npos)
+        {
+            inStatesSection = true;
+            inTransitionsSection = false;
+            continue;
+        }
+        else if (line.find("Transitions:") != string::npos)
+        {
+            inStatesSection = false;
+            inTransitionsSection = true;
+            continue;
+        }
+
+        if (inStatesSection)
+        {
+            // parse states
             string state_name = line.substr(0, line.find(":"));
-            // remove state name from line
             line = line.substr(line.find(":") + 1);
             vector<shared_ptr<Operation>> operations;
-            // split the line by comma
             vector<string> extracted_operations = split(line, ',');
 
-            // create a vector of shared_ptr of Operation
             for (const auto &operation : extracted_operations)
             {
                 shared_ptr<Operation> op = make_shared<Operation>(operation);
-                // add the operation to the vector
                 operations.push_back(op);
             }
 
-            // create a shared_ptr of State
             shared_ptr<State> state = make_shared<State>(state_name, operations, variables);
-
+            states.push_back(state);
         }
-        else
+        else if (inTransitionsSection)
         {
-            cout << "States not found" << endl;
-            exit(1);
+            // parse transitions
+            vector<string> extracted_transitions = split(line, ',');
+
+            if (extracted_transitions.size() != 3)
+            {
+                cout << "Invalid transition found" << endl;
+                exit(1);
+            }
+
+            string source_state_name = extracted_transitions[0];
+            string destination_state_name = extracted_transitions[1];
+
+            // Find the source and destination states in the states vector
+            shared_ptr<State> source_state;
+            shared_ptr<State> destination_state;
+            for (auto &state : states)
+            {
+                if (state->get_name() == source_state_name)
+                {
+                    source_state = state;
+                }
+                else if (state->get_name() == destination_state_name)
+                {
+                    destination_state = state;
+                }
+            }
+
+            if (!source_state || !destination_state)
+            {
+                cout << "Invalid source or destination state in transition" << endl;
+                exit(1);
+            }
+
+            shared_ptr<Transition> transition = make_shared<Transition>(
+                source_state,
+                destination_state,
+                stoi(extracted_transitions[2]));
+
+            transitions.push_back(transition);
         }
-        }
-    
 
-
-
-
-           
-
-
-
-
-            
-        
-
-
-     
-
-
+        ln++;
     }
 
+    // find the initial state
+    shared_ptr<State> initial_state_ptr;
+    initial_state_ptr = states[0];
+    // create a shared_ptr of FSM
+    shared_ptr<FSM> fsm = make_shared<FSM>(fsm_name, states, transitions, variables, initial_state);
 
-
-
-    
+    return *fsm;
 }

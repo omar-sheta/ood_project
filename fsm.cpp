@@ -1,5 +1,25 @@
 #include "fsm.h"
 
+FSM::FSM()
+{
+    current_state = nullptr;
+}
+
+FSM::~FSM()
+{
+    states.clear();
+    transitions.clear();
+}
+
+FSM::FSM(string name, vector<shared_ptr<State>> states, vector<shared_ptr<Transition>> transitions, vector<shared_ptr<Variable>> variables, shared_ptr<State> current_state)
+{
+    this->name = name;
+    this->states = states;
+    this->transitions = transitions;
+    this->variables = variables;
+    this->current_state = current_state;
+}
+
 void FSM::add_state(shared_ptr<State> state)
 {
     states.push_back(state);
@@ -32,4 +52,8 @@ void FSM::execute_next_step()
     }
 
     current_state->exit();
+}
+vector<shared_ptr<State>> FSM::get_states()
+{
+    return states;
 }
