@@ -1,13 +1,14 @@
 FSM fsm1
-VAR X, Y
+VAR X, Y , Z
 States:
-a: PRINT “state A”, X=X+1, sleep 10, wait
-b: PRINT “state B”, Y=Y+1, sleep 10, wait
-c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
+a: PRINT "state A", X=X+1, sleep 10, wait
+b: PRINT "state B", Y=Y+1, sleep 10, wait
+c: PRINT "thank you for using fsm1", PRINT X, PRINT Y, end
+d: PRINT "state D", sleep 10, wait
 Transitions:
-a, b, 1
-b, a, 2
+a , b , 1
+b, a, 2  
 a, a, 2
-b, b, 1
-a, c, 3
+b, b, 1  
 b, c, 3
+d, a, 1

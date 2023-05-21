@@ -23,8 +23,13 @@ int main()
   }
   cout << "Transitions:" << endl;
   // print transitions
-  // for (auto transition : fsm.get_transitions())
-  // {
-  //   cout << transition->get_name() << endl;
-  // }
+  for (auto transition : fsm.get_transitions())
+  {
+    cout << transition->get_source_state()->get_name() << " -> " << transition->get_destination_state()->get_name() << endl;
+  }
+  cout << "Variables" << endl;
+  for (auto variable : fsm.get_variables())
+  {
+    cout << variable->get_name() << endl;
+  }
 }

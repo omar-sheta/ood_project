@@ -57,3 +57,13 @@ vector<shared_ptr<State>> FSM::get_states()
 {
     return states;
 }
+
+vector<shared_ptr<Transition>> FSM::get_transitions()
+{
+    return transitions;
+}
+
+vector<shared_ptr<Variable>> FSM::get_variables()
+{
+    return variables;
+}
