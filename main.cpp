@@ -21,4 +21,10 @@ int main()
   {
     cout << state->get_name() << endl;
   }
+  cout << "Transitions:" << endl;
+  // print transitions
+  // for (auto transition : fsm.get_transitions())
+  // {
+  //   cout << transition->get_name() << endl;
+  // }
 }

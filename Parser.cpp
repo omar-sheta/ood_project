@@ -20,6 +20,17 @@ vector<string> split(const string &s, char delimiter)
     return tokens;
 }
 
+string trim(const string &str)
+{
+    size_t start = str.find_first_not_of(" \t");
+    size_t end = str.find_last_not_of(" \t");
+    if (start == string::npos || end == string::npos)
+    {
+        return "";
+    }
+    return str.substr(start, end - start + 1);
+}
+
 FSM Parser::get_fsm()
 {
     // create a vector of states
@@ -97,10 +108,9 @@ FSM Parser::get_fsm()
         // now parse states
         /*
         States:
-a: PRINT “state A”, X=X+1, sleep 10, wait
-b: PRINT “state B”, Y=Y+1, sleep 10, wait
-c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
-
+        a: PRINT “state A”, X=X+1, sleep 10, wait
+        b: PRINT “state B”, Y=Y+1, sleep 10, wait
+        c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
         */
 
         if (line.find("States:") != string::npos)
@@ -135,7 +145,7 @@ c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
         }
         else if (inTransitionsSection)
         {
-            // parse transitions
+            // Parse transitions
             vector<string> extracted_transitions = split(line, ',');
 
             if (extracted_transitions.size() != 3)
@@ -144,8 +154,15 @@ c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
                 exit(1);
             }
 
-            string source_state_name = extracted_transitions[0];
-            string destination_state_name = extracted_transitions[1];
+            string source_state_name = trim(extracted_transitions[0]);
+            string destination_state_name = trim(extracted_transitions[1]);
+
+            // Trim the state names
+            source_state_name = trim(source_state_name);
+            destination_state_name = trim(destination_state_name);
+
+            // cout << "Source state: " << source_state_name << endl;
+            // cout << "Destination state: " << destination_state_name << endl;
 
             // Find the source and destination states in the states vector
             shared_ptr<State> source_state;
@@ -156,12 +173,13 @@ c: PRINT “thank you for using fsm1”, PRINT X, PRINT Y, end
                 {
                     source_state = state;
                 }
-                else if (state->get_name() == destination_state_name)
+                if (state->get_name() == destination_state_name)
                 {
                     destination_state = state;
                 }
             }
-
+            // cout << "Source state: " << source_state->get_name() << endl;
+            // cout << "Destination state: " << destination_state->get_name() << endl;
             if (!source_state || !destination_state)
             {
                 cout << "Invalid source or destination state in transition" << endl;
