@@ -13,5 +13,6 @@ private:
 public:
     Print(string message) : Operation("Print"), message(message) {}
     void execute() const;
+    void setMessage(string message);
     ~Print() {}
 };

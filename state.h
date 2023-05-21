@@ -13,12 +13,12 @@ class State
 private:
     string name;
     vector<shared_ptr<Operation>> operations;
-    vector<shared_ptr<Variable>> variables;
 
 public:
-    State(string name, vector<shared_ptr<Operation>> operations, vector<shared_ptr<Variable>> variables) : name(name), operations(operations), variables(variables) {}
+    State(string name, vector<shared_ptr<Operation>> operations) : name(name), operations(operations) {}
     virtual ~State() {}
     virtual void enter();
     virtual void exit();
     string get_name() const;
+    vector<shared_ptr<Operation>> get_operations() const;
 };

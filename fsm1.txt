@@ -1,5 +1,5 @@
 FSM fsm1
-VAR X, Y , Z
+VAR X, Y, Z
 States:
 a: PRINT "state A", X=X+1, sleep 10, wait
 b: PRINT "state B", Y=Y+1, sleep 10, wait

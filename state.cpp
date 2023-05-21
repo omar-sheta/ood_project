@@ -14,3 +14,8 @@ string State::get_name() const
 {
     return name;
 }
+
+vector<shared_ptr<Operation>> State::get_operations() const
+{
+    return operations;
+}

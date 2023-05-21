@@ -133,6 +133,11 @@ FSM Parser::get_fsm()
             line = line.substr(line.find(":") + 1);
             vector<shared_ptr<Operation>> operations;
             vector<string> extracted_operations = split(line, ',');
+            // remove whitespace
+            for (auto &operation : extracted_operations)
+            {
+                operation = trim(operation);
+            }
 
             for (const auto &operation : extracted_operations)
             {
@@ -140,7 +145,7 @@ FSM Parser::get_fsm()
                 operations.push_back(op);
             }
 
-            shared_ptr<State> state = make_shared<State>(state_name, operations, variables);
+            shared_ptr<State> state = make_shared<State>(state_name, operations);
             states.push_back(state);
         }
         else if (inTransitionsSection)
