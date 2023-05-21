@@ -11,13 +11,14 @@ FSM::~FSM()
     transitions.clear();
 }
 
-FSM::FSM(string name, vector<shared_ptr<State>> states, vector<shared_ptr<Transition>> transitions, vector<shared_ptr<Variable>> variables, shared_ptr<State> current_state)
+FSM::FSM(string name, vector<shared_ptr<State>> states, vector<shared_ptr<Transition>> transitions, vector<shared_ptr<Variable>> variables, shared_ptr<State> current_state, int current_value)
 {
     this->name = name;
     this->states = states;
     this->transitions = transitions;
     this->variables = variables;
     this->current_state = current_state;
+    this->current_value = current_value;
 }
 
 void FSM::add_state(shared_ptr<State> state)
@@ -66,4 +67,8 @@ vector<shared_ptr<Transition>> FSM::get_transitions()
 vector<shared_ptr<Variable>> FSM::get_variables()
 {
     return variables;
+}
+void FSM::set_current_value(int value)
+{
+    current_value = value;
 }

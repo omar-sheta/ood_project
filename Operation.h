@@ -1,17 +1,18 @@
 #pragma once
 
+#include <memory>
 #include <iostream>
 
-using namespace std;
+class FSM; // Forward declaration of FSM class
 
 class Operation
 {
 private:
-    string name;
+    std::string name;
 
 public:
-    Operation(string name) : name(name) {}
+    Operation(std::string name) : name(name) {}
     virtual ~Operation() {}
-    virtual void execute() const;
-    string get_name() const;
+    virtual void execute(std::shared_ptr<FSM> fsm) = 0;
+    virtual std::string get_name() const;
 };

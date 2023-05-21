@@ -11,8 +11,9 @@ private:
     string message;
 
 public:
-    Print(string message) : Operation("Print"), message(message) {}
-    void execute() const;
+    Print(string name, string message) : Operation(name), message(message) {}
+    void execute(shared_ptr<FSM> fsm) override;
     void setMessage(string message);
+    std::string get_name() const;
     ~Print() {}
 };
