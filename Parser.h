@@ -4,10 +4,12 @@
 using namespace std;
 #include "fsm.h"
 class Parser {
-public:
-  Parser(string file_name);
-  FSM get_fsm() { return fsm; }
 private:
-    FSM fsm;
-    };
+    Parser(string filename);
+    string filename;
+
+public:
+  FSM get_fsm();
+};
+
 

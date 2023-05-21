@@ -1,6 +1,6 @@
 #include "Variable.h"
 
-Variable::Variable(string name, string value) : name(name), value(value) {}
+Variable::Variable(string name) : name(name), value(0) {}
 
 string Variable::get_name() const
 {

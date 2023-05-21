@@ -9,7 +9,7 @@ private:
     string name;
     string value;
 public:
-    Variable(string name, string value) {}
+    Variable(string name) {}
     virtual ~Variable() {}
     string get_name() const;
     string get_value() const;

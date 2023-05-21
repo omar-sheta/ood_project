@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include "Variable.h"
+#include "Operation.h"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class State
 {
 private:
     string name;
-    vector<string> operations;
+    vector<Operation> operations;
     vector<Variable> variables;
     
 

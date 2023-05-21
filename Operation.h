@@ -12,5 +12,6 @@ private:
 public:
     Operation(string name) : name(name) {}
     virtual ~Operation() {}
+    virtual void execute() const;
     string get_name() const;
 };
