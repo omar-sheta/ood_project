@@ -2,18 +2,15 @@
 
 #include <iostream>
 #include "Operation.h"
-// #include "fsm.h"
+#include "fsm.h"
 
 using namespace std;
 
 class Wait : public Operation
 {
-private:
-    int time;
 
 public:
-    Wait(string name, int time, FSM &fsm) : Operation(name), time(time) {}
-    void execute(FSM &fsm) const;
+    Wait(string name) : Operation(name) {}
+    void execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable) override;
     ~Wait() {}
-    void setTime(int time);
 };

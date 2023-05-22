@@ -272,6 +272,12 @@ shared_ptr<FSM> Parser::get_fsm()
                         cout << "Invalid arithmetic statement." << operation << endl;
                     }
                 }
+                //check if operation has wait
+                if (operation.find("wait") != string::npos)
+                {
+                    shared_ptr<Operation> op = make_shared<Wait>("WAIT");
+                    operations.push_back(op);
+                }
             }
             // check
             //  cout << "State name: " << state_name << endl;

@@ -8,6 +8,7 @@
 #include "transition.h"
 #include "print.h"
 #include "arithmetic.h"
+#include "wait.h"
 #include "FsmFactory.h"
 using namespace std;
 
