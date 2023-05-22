@@ -163,109 +163,18 @@ shared_ptr<FSM> Parser::get_fsm()
                     {
                         string first_operand = operation.substr(operation.find("=") + 1, operation.find("+") - operation.find("=") - 1);
                         first_operand = trim(first_operand);
-                        bool isVariable1 = false;
-                        int first_operand_value;
-                        for (auto &variable : variables)
-                        {
-                            if (variable->get_name() == first_operand)
-                            {
-                                isVariable1 = true;
-                                first_operand_value = variable->get_value();
-                            }
-                        }
-                        if (!isVariable1)
-                        {
-                            if (!isdigit(first_operand[0]))
-                            {
-                                cout << "Invalid first operand: " << first_operand << endl;
-                                exit(1);
-                            }
-                            else
-                            {
-                                first_operand_value = stoi(first_operand);
-                            }
-                        }
-                        // GETTING SECOND OPERAND
                         string second_operand = operation.substr(operation.find("+") + 1);
                         second_operand = trim(second_operand);
-                        bool isVariable2 = false;
-                        int second_operand_value;
-                        for (auto &variable : variables)
-                        {
-                            if (variable->get_name() == second_operand)
-                            {
-                                isVariable2 = true;
-                                second_operand_value = variable->get_value();
-                            }
-                        }
-                        if (!isVariable2)
-                        {
-                            if (!isdigit(second_operand[0]))
-                            {
-                                cout << "Invalid second operand: " << second_operand << endl;
-                                exit(1);
-                            }
-                            else
-                            {
-                                second_operand_value = stoi(second_operand);
-                            }
-                        }
-
-                        shared_ptr<Operation> op = make_shared<Arithmetic>("ADD", first_operand_value, second_operand_value, variable_statement);
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("ADD", first_operand, second_operand, variable_statement);
                         operations.push_back(op);
                     }
                     else if (operation.find("*") != string::npos)
                     {
-                        string first_operand = operation.substr(operation.find("=") + 1, operation.find("+") - operation.find("=") - 1);
+                        string first_operand = operation.substr(operation.find("=") + 1, operation.find("*") - operation.find("=") - 1);
                         first_operand = trim(first_operand);
-                        bool isVariable1 = false;
-                        int first_operand_value;
-                        for (auto &variable : variables)
-                        {
-                            if (variable->get_name() == first_operand)
-                            {
-                                isVariable1 = true;
-                                first_operand_value = variable->get_value();
-                            }
-                        }
-                        if (!isVariable1)
-                        {
-                            if (!isdigit(first_operand[0]))
-                            {
-                                cout << "Invalid first operand: " << first_operand << endl;
-                                exit(1);
-                            }
-                            else
-                            {
-                                first_operand_value = stoi(first_operand);
-                            }
-                        }
-                        // GETTING FIRST OPERAND
-                        string second_operand = operation.substr(operation.find("+") + 1);
+                        string second_operand = operation.substr(operation.find("*") + 1);
                         second_operand = trim(second_operand);
-                        bool isVariable2 = false;
-                        int second_operand_value;
-                        for (auto &variable : variables)
-                        {
-                            if (variable->get_name() == second_operand)
-                            {
-                                isVariable2 = true;
-                                second_operand_value = variable->get_value();
-                            }
-                        }
-                        if (!isVariable2)
-                        {
-                            if (!isdigit(second_operand[0]))
-                            {
-                                cout << "Invalid second operand: " << second_operand << endl;
-                                exit(1);
-                            }
-                            else
-                            {
-                                second_operand_value = stoi(second_operand);
-                            }
-                        }
-                        shared_ptr<Operation> op = make_shared<Arithmetic>("MULTI", first_operand_value, second_operand_value, variable_statement);
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("MULTI", first_operand, second_operand, variable_statement);
                         operations.push_back(op);
                     }
                     else
@@ -279,7 +188,7 @@ shared_ptr<FSM> Parser::get_fsm()
                     shared_ptr<Operation> op = make_shared<Wait>("WAIT");
                     operations.push_back(op);
                 }
-                // if operation has "sleep"
+                // check if operation has "sleep"
                 if (operation.find("sleep") != string::npos)
                 {
                     string sleep_statement = operation.substr(operation.find("sleep") + 5);
@@ -287,30 +196,18 @@ shared_ptr<FSM> Parser::get_fsm()
                     shared_ptr<Operation> op = make_shared<Sleep>("SLEEP", stoi(sleep_statement));
                     operations.push_back(op);
                 }
-                // if operation has "end"
+                // check if operation has "end"
                 if (operation.find("end") != string::npos)
                 {
                     shared_ptr<Operation> op = make_shared<End>("END");
                     operations.push_back(op);
                 }
-                // if operation has format as "JUMP state"
+                // check if operation has format as "JUMP state"
                 if (operation.find("JUMP") != string::npos)
                 {
                     string state_name = operation.substr(operation.find("JUMP") + 4);
                     state_name = trim(state_name);
-                    bool isState = false;
-                    for (auto &state : states)
-                    {
-                        if (state->get_name() == state_name)
-                        {
-                            isState = true;
-                        }
-                    }
-                    if (!isState)
-                    {
-                        cout << "Invalid state name: " << state_name << endl;
-                        exit(1);
-                    }
+
                     shared_ptr<Operation> op = make_shared<Jump>("JUMP", state_name);
                     operations.push_back(op);
                 }

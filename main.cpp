@@ -9,7 +9,6 @@ int main()
 
   file_name = "fsm1.txt";
   Parser parser(file_name);
-
   shared_ptr<FSM> fsm = parser.get_fsm();
 
   cout << "FSM: " << endl;
@@ -38,21 +37,29 @@ int main()
     for (auto operation : states->get_operations())
     {
       string name = operation->get_name();
-
-      if (name.find("PRINT") != string::npos)
+      if (name.find("SLEEP") != string::npos)
       {
         operation->execute(fsm);
       }
-      else if (name.find("ADD") != string::npos || name.find("MULTI") != string::npos)
-      {
-        operation->execute(fsm);
-      }
+      // if (name.find("PRINT") != string::npos)
+      // {
+      //   operation->execute(fsm);
+      // }
+      // else if (name.find("ADD") != string::npos || name.find("MULTI") != string::npos)
+      // {
+      //   operation->execute(fsm);
+      // }
+      // // do for jump
+      // else if (name.find("JUMP") != string::npos)
+      // {
+      //   operation->execute(fsm);
+      // }
     }
-  }
-  // print out the variables values
-  cout << "Variables" << endl;
-  for (auto variable : fsm->get_variables())
-  {
-    cout << variable->get_name() << " = " << variable->get_value() << endl;
+    // print out the variables values
+    cout << "Variables" << endl;
+    for (auto variable : fsm->get_variables())
+    {
+      cout << variable->get_name() << " = " << variable->get_value() << endl;
+    }
   }
 }
