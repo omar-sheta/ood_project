@@ -140,13 +140,145 @@ shared_ptr<FSM> Parser::get_fsm()
                         }
                     }
                 }
-            }
+                // CHECK FOR ARITHMETIC OPERATION WITH FORMAT X=X+1,
+                if (operation.find("=") != string::npos)
+                {
 
-            cout << "State name: " << state_name << endl;
-            for (auto &op : operations)
-            {
-                // cout << "Operation: " << op->get_name() << endl;
+                    string variable_statement = operation.substr(0, operation.find("="));
+                    variable_statement = trim(variable_statement);
+                    bool isVariable = false;
+                    for (auto &variable : variables)
+                    {
+                        if (variable->get_name() == variable_statement)
+                        {
+                            isVariable = true;
+                        }
+                    }
+                    if (!isVariable)
+                    {
+                        cout << "Invalid variable statement: " << operation << endl;
+                        exit(1);
+                    }
+                    if (operation.find("+") != string::npos)
+                    {
+                        string first_operand = operation.substr(operation.find("=") + 1, operation.find("+") - operation.find("=") - 1);
+                        first_operand = trim(first_operand);
+                        bool isVariable1 = false;
+                        int first_operand_value;
+                        for (auto &variable : variables)
+                        {
+                            if (variable->get_name() == first_operand)
+                            {
+                                isVariable1 = true;
+                                first_operand_value = variable->get_value();
+                            }
+                        }
+                        if (!isVariable1)
+                        {
+                            if (!isdigit(first_operand[0]))
+                            {
+                                cout << "Invalid first operand: " << first_operand << endl;
+                                exit(1);
+                            }
+                            else
+                            {
+                                first_operand_value = stoi(first_operand);
+                            }
+                        }
+                        // GETTING SECOND OPERAND
+                        string second_operand = operation.substr(operation.find("+") + 1);
+                        second_operand = trim(second_operand);
+                        bool isVariable2 = false;
+                        int second_operand_value;
+                        for (auto &variable : variables)
+                        {
+                            if (variable->get_name() == second_operand)
+                            {
+                                isVariable2 = true;
+                                second_operand_value = variable->get_value();
+                            }
+                        }
+                        if (!isVariable2)
+                        {
+                            if (!isdigit(second_operand[0]))
+                            {
+                                cout << "Invalid second operand: " << second_operand << endl;
+                                exit(1);
+                            }
+                            else
+                            {
+                                second_operand_value = stoi(second_operand);
+                            }
+                        }
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("add", first_operand_value, second_operand_value);
+                        operations.push_back(op);
+                    }
+                    else if (operation.find("*") != string::npos)
+                    {
+                        string first_operand = operation.substr(operation.find("=") + 1, operation.find("+") - operation.find("=") - 1);
+                        first_operand = trim(first_operand);
+                        bool isVariable1 = false;
+                        int first_operand_value;
+                        for (auto &variable : variables)
+                        {
+                            if (variable->get_name() == first_operand)
+                            {
+                                isVariable1 = true;
+                                first_operand_value = variable->get_value();
+                            }
+                        }
+                        if (!isVariable1)
+                        {
+                            if (!isdigit(first_operand[0]))
+                            {
+                                cout << "Invalid first operand: " << first_operand << endl;
+                                exit(1);
+                            }
+                            else
+                            {
+                                first_operand_value = stoi(first_operand);
+                            }
+                        }
+                        // GETTING FIRST OPERAND
+                        string second_operand = operation.substr(operation.find("+") + 1);
+                        second_operand = trim(second_operand);
+                        bool isVariable2 = false;
+                        int second_operand_value;
+                        for (auto &variable : variables)
+                        {
+                            if (variable->get_name() == second_operand)
+                            {
+                                isVariable2 = true;
+                                second_operand_value = variable->get_value();
+                            }
+                        }
+                        if (!isVariable2)
+                        {
+                            if (!isdigit(second_operand[0]))
+                            {
+                                cout << "Invalid second operand: " << second_operand << endl;
+                                exit(1);
+                            }
+                            else
+                            {
+                                second_operand_value = stoi(second_operand);
+                            }
+                        }
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("multi", first_operand_value, second_operand_value);
+                        operations.push_back(op);
+                    }
+                    else
+                    {
+                        cout << "Invalid arithmetic statement." << operation << endl;
+                    }
+                }
             }
+            // check
+            //  cout << "State name: " << state_name << endl;
+            // for (auto &op : operations)
+            // {
+            //      cout << "Operation: " << op->get_name() << endl;
+            // }
 
             shared_ptr<State> state = make_shared<State>(state_name, operations);
             states.push_back(state);

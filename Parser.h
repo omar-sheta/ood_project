@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "transition.h"
 #include "print.h"
+#include "arithmetic.h"
 #include "FsmFactory.h"
 using namespace std;
 

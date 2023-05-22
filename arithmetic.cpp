@@ -1,14 +1,14 @@
 #include "arithmetic.h"
 
-void Arithmetic::execute(Variable &result) const
+void Arithmetic::execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable)
 {
     if (get_name() == "add")
     {
-        result.set_value(num1 + num2);
+        variable->set_value(num1 + num2);
     }
     else if (get_name() == "multi")
     {
-        result.set_value(num1 * num2);
+        variable->set_value(num1 * num2);
     }
 }
 

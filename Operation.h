@@ -3,8 +3,8 @@
 #include <memory>
 #include <iostream>
 
-class FSM; // Forward declaration of FSM class
-
+class FSM;      // Forward declaration of FSM class
+class Variable; // Forward declaration of Variable class
 class Operation
 {
 private:
@@ -13,6 +13,6 @@ private:
 public:
     Operation(std::string name) : name(name) {}
     virtual ~Operation() {}
-    virtual void execute(std::shared_ptr<FSM> fsm) = 0;
+    virtual void execute(std::shared_ptr<FSM> fsm, std::shared_ptr<Variable> variable) = 0;
     virtual std::string get_name() const;
 };

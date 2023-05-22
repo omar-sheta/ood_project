@@ -38,16 +38,18 @@ int main()
     for (auto operation : states->get_operations())
     {
       string name = operation->get_name();
-      
+
       // PRINT "state B"
-      // check if operation contains PRINT
+
       if (name.find("PRINT") != string::npos)
       {
-        // get the string to print
-        operation->execute(fsm);
+        shared_ptr<Variable> variable = fsm->get_variables()[0];
+        operation->execute(fsm, variable);
       }
-      else
+
+      else if (name.find("add") != string::npos || name.find("multi") != string::npos)
       {
+        // EXECUTE
       }
     }
   }

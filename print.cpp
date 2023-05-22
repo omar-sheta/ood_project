@@ -4,7 +4,7 @@ void Print::setMessage(string message)
 {
     this->message = message;
 }
-void Print::execute(shared_ptr<FSM> fsm)
+void Print::execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable)
 {
     cout << message << endl;
 }

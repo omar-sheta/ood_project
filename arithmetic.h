@@ -14,7 +14,7 @@ private:
 
 public:
     Arithmetic(string name, int num1, int num2) : Operation(name), num1(num1), num2(num2) {}
-    void execute(Variable &result) const;
+    void execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable) override;
     ~Arithmetic() {}
     void setNum1(int num1);
     void setNum2(int num2);
