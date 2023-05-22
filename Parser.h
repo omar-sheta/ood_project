@@ -9,6 +9,9 @@
 #include "print.h"
 #include "arithmetic.h"
 #include "wait.h"
+#include "sleep.h"
+#include "end.h"
+#include "jump.h"
 #include "FsmFactory.h"
 using namespace std;
 

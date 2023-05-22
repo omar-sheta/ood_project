@@ -210,7 +210,8 @@ shared_ptr<FSM> Parser::get_fsm()
                                 second_operand_value = stoi(second_operand);
                             }
                         }
-                        shared_ptr<Operation> op = make_shared<Arithmetic>("add", first_operand_value, second_operand_value);
+
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("ADD", first_operand_value, second_operand_value, variable_statement);
                         operations.push_back(op);
                     }
                     else if (operation.find("*") != string::npos)
@@ -264,7 +265,7 @@ shared_ptr<FSM> Parser::get_fsm()
                                 second_operand_value = stoi(second_operand);
                             }
                         }
-                        shared_ptr<Operation> op = make_shared<Arithmetic>("multi", first_operand_value, second_operand_value);
+                        shared_ptr<Operation> op = make_shared<Arithmetic>("MULTI", first_operand_value, second_operand_value, variable_statement);
                         operations.push_back(op);
                     }
                     else
@@ -272,19 +273,54 @@ shared_ptr<FSM> Parser::get_fsm()
                         cout << "Invalid arithmetic statement." << operation << endl;
                     }
                 }
-                //check if operation has wait
+                // check if operation has wait
                 if (operation.find("wait") != string::npos)
                 {
                     shared_ptr<Operation> op = make_shared<Wait>("WAIT");
                     operations.push_back(op);
                 }
+                // if operation has "sleep"
+                if (operation.find("sleep") != string::npos)
+                {
+                    string sleep_statement = operation.substr(operation.find("sleep") + 5);
+                    sleep_statement = trim(sleep_statement);
+                    shared_ptr<Operation> op = make_shared<Sleep>("SLEEP", stoi(sleep_statement));
+                    operations.push_back(op);
+                }
+                // if operation has "end"
+                if (operation.find("end") != string::npos)
+                {
+                    shared_ptr<Operation> op = make_shared<End>("END");
+                    operations.push_back(op);
+                }
+                // if operation has format as "JUMP state"
+                if (operation.find("JUMP") != string::npos)
+                {
+                    string state_name = operation.substr(operation.find("JUMP") + 4);
+                    state_name = trim(state_name);
+                    bool isState = false;
+                    for (auto &state : states)
+                    {
+                        if (state->get_name() == state_name)
+                        {
+                            isState = true;
+                        }
+                    }
+                    if (!isState)
+                    {
+                        cout << "Invalid state name: " << state_name << endl;
+                        exit(1);
+                    }
+                    shared_ptr<Operation> op = make_shared<Jump>("JUMP", state_name);
+                    operations.push_back(op);
+                }
             }
-            // check
-            //  cout << "State name: " << state_name << endl;
-            // for (auto &op : operations)
-            // {
-            //      cout << "Operation: " << op->get_name() << endl;
-            // }
+            // CHECKING OPERATIONS IN STATES
+            cout << "State name: " << state_name << endl;
+            for (auto &op : operations)
+            {
+                cout << "Operation: " << op->get_name() << endl;
+            }
 
             shared_ptr<State> state = make_shared<State>(state_name, operations);
             states.push_back(state);

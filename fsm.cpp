@@ -72,3 +72,7 @@ void FSM::set_current_value(int value)
 {
     current_value = value;
 }
+shared_ptr<State> FSM::get_current_state()
+{
+    return current_state;
+}

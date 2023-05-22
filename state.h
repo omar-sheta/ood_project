@@ -21,4 +21,5 @@ public:
     virtual void exit();
     string get_name() const;
     vector<shared_ptr<Operation>> get_operations() const;
+    void execute_operations(shared_ptr<FSM> fsm);
 };

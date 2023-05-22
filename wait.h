@@ -11,6 +11,6 @@ class Wait : public Operation
 
 public:
     Wait(string name) : Operation(name) {}
-    void execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable) override;
+    void execute(shared_ptr<FSM> fsm) override;
     ~Wait() {}
 };

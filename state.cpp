@@ -19,3 +19,10 @@ vector<shared_ptr<Operation>> State::get_operations() const
 {
     return operations;
 }
+void State::execute_operations(shared_ptr<FSM> fsm)
+{
+    for (auto operation : operations)
+    {
+        operation->execute(fsm);
+    }
+}

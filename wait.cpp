@@ -1,6 +1,6 @@
 #include "wait.h"
 
-void Wait::execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable)
+void Wait::execute(shared_ptr<FSM> fsm)
 {
     cout << "Enter input value: ";
     int value;

@@ -12,7 +12,7 @@ private:
 
 public:
     Print(string name, string message) : Operation(name), message(message) {}
-    void execute(shared_ptr<FSM> fsm, shared_ptr<Variable> variable) override;
+    void execute(shared_ptr<FSM> fsm) override;
     void setMessage(string message);
     std::string get_name() const;
     ~Print() {}

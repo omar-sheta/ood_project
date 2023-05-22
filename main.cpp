@@ -1,6 +1,6 @@
 
 #include "Parser.h"
-#include "Print.h"
+
 using namespace std;
 
 int main()
@@ -21,7 +21,7 @@ int main()
   }
 
   cout << "Transitions:" << endl;
-  // print transitions
+
   for (auto transition : fsm->get_transitions())
   {
     cout << transition->get_source_state()->get_name() << " -> " << transition->get_destination_state()->get_name() << endl;
@@ -39,18 +39,20 @@ int main()
     {
       string name = operation->get_name();
 
-      // PRINT "state B"
-
       if (name.find("PRINT") != string::npos)
       {
-        shared_ptr<Variable> variable = fsm->get_variables()[0];
-        operation->execute(fsm, variable);
+        operation->execute(fsm);
       }
-
-      else if (name.find("add") != string::npos || name.find("multi") != string::npos)
+      else if (name.find("ADD") != string::npos || name.find("MULTI") != string::npos)
       {
-        // EXECUTE
+        operation->execute(fsm);
       }
     }
+  }
+  // print out the variables values
+  cout << "Variables" << endl;
+  for (auto variable : fsm->get_variables())
+  {
+    cout << variable->get_name() << " = " << variable->get_value() << endl;
   }
 }

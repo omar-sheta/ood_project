@@ -15,8 +15,8 @@ private:
     int seconds;
 
 public:
-    Sleep(int seconds) : Operation("Sleep"), seconds(seconds) {}
-    void execute() const;
+    Sleep(string name, int seconds) : Operation(name), seconds(seconds) {}
+    void execute(shared_ptr<FSM> fsm) override;
     void setSeconds(int seconds);
     ~Sleep() {}
 };
