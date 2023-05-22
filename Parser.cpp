@@ -112,7 +112,9 @@ shared_ptr<FSM> Parser::get_fsm()
                         size_t end_quote_pos = operation.find("\"", start_quote_pos + 1);
                         if (start_quote_pos != string::npos && end_quote_pos != string::npos)
                         {
-                            string print_statement = operation.substr(start_quote_pos + 1, end_quote_pos - start_quote_pos - 1);
+                            // string print_statement = operation.substr(start_quote_pos + 1, end_quote_pos - start_quote_pos - 1);
+                            // pass statement with quotes
+                            string print_statement = operation.substr(start_quote_pos, end_quote_pos - start_quote_pos + 1);
                             // cout << "Print statement: " << print_statement << endl;
                             shared_ptr<Operation> op = make_shared<Print>("PRINT", print_statement);
                             operations.push_back(op);
@@ -131,6 +133,9 @@ shared_ptr<FSM> Parser::get_fsm()
                             string variable_statement = operation.substr(print_pos + 5);
                             variable_statement = trim(variable_statement);
                             // cout << "Print variable: " << variable_statement << endl;
+                            // check if variable is valid
+                            // cout<<"Variable statement: "<<variable_statement<<endl;
+
                             shared_ptr<Operation> op = make_shared<Print>("PRINT", variable_statement);
                             operations.push_back(op);
                         }

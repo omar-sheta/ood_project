@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Operation.h"
+#include "fsm.h"
 using namespace std;
 
 // print operation that inherits from Operation

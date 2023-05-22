@@ -37,18 +37,19 @@ int main()
     for (auto operation : states->get_operations())
     {
       string name = operation->get_name();
-      if (name.find("SLEEP") != string::npos)
+      // if (name.find("SLEEP") != string::npos)
+      // {
+      //   operation->execute(fsm);
+      // }
+      if (name.find("PRINT") != string::npos)
+      {
+        cout << "PRINT executing" << endl;
+        operation->execute(fsm);
+      }
+      if (name.find("ADD") != string::npos || name.find("MULTI") != string::npos)
       {
         operation->execute(fsm);
       }
-      // if (name.find("PRINT") != string::npos)
-      // {
-      //   operation->execute(fsm);
-      // }
-      // else if (name.find("ADD") != string::npos || name.find("MULTI") != string::npos)
-      // {
-      //   operation->execute(fsm);
-      // }
       // // do for jump
       // else if (name.find("JUMP") != string::npos)
       // {
