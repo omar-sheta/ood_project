@@ -23,6 +23,7 @@ void State::execute_operations(shared_ptr<FSM> fsm)
 {
     for (auto operation : operations)
     {
+
         operation->execute(fsm);
     }
 }

@@ -5,6 +5,7 @@
 
 class FSM;      // Forward declaration of FSM class
 class Variable; // Forward declaration of Variable class
+
 class Operation
 {
 private:

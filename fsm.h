@@ -4,7 +4,7 @@
 #include "transition.h"
 
 using namespace std;
-class FSM
+class FSM : public std::enable_shared_from_this<FSM>
 {
 private:
     string name;

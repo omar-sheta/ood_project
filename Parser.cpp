@@ -212,17 +212,18 @@ shared_ptr<FSM> Parser::get_fsm()
                 {
                     string state_name = operation.substr(operation.find("JUMP") + 4);
                     state_name = trim(state_name);
+                    // cout << "Jumping found: " << state_name << endl;
 
                     shared_ptr<Operation> op = make_shared<Jump>("JUMP", state_name);
                     operations.push_back(op);
                 }
             }
             // CHECKING OPERATIONS IN STATES
-            cout << "State name: " << state_name << endl;
-            for (auto &op : operations)
-            {
-                cout << "Operation: " << op->get_name() << endl;
-            }
+            // cout << "State name: " << state_name << endl;
+            // for (auto &op : operations)
+            // {
+            //     cout << "Operation: " << op->get_name() << endl;
+            // }
 
             shared_ptr<State> state = make_shared<State>(state_name, operations);
             states.push_back(state);

@@ -11,7 +11,7 @@ void Print::execute(shared_ptr<FSM> fsm)
     if (message[0] == '\"' && message[message.length() - 1] == '\"')
     {
         message = message.substr(1, message.length() - 2);
-        cout << message << endl;
+        // cout << message << endl;
     }
     else
     {
@@ -21,11 +21,13 @@ void Print::execute(shared_ptr<FSM> fsm)
             {
                 message = to_string(var->get_value());
 
-                cout << message << endl;
+                // cout << message << endl;
                 break;
             }
         }
     }
+    // cout << "Executing print" << endl;
+    cout << message << endl;
 }
 
 std::string Print::get_name() const

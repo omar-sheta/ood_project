@@ -38,21 +38,32 @@ void FSM::set_current_state(shared_ptr<State> state)
 
 void FSM::execute_next_step()
 {
-    current_state->enter();
+    // use this to create a shared pointer to current fsm object
+    shared_ptr<FSM> fsm = shared_from_this();
+    current_state->execute_operations(fsm);
 
-    int input;
-    cin >> input;
 
-    for (const auto &transition : transitions)
-    {
-        if (transition->get_source_state() == current_state && transition->get_input_value() == input)
-        {
-            current_state = transition->get_destination_state();
-            break;
-        }
-    }
+    // // Find the next transition based on the current value
+    // shared_ptr<Transition> nextTransition = nullptr;
+    // for (const auto &transition : transitions)
+    // {
+    //     if (transition->get_source_state() == current_state && transition->get_input_value() == current_value)
+    //     {
+    //         nextTransition = transition;
+    //         break;
+    //     }
+    // }
 
-    current_state->exit();
+    // if (nextTransition)
+    // {
+    //     // Change the current state to the destination state of the transition
+    //     current_state = nextTransition->get_destination_state();
+    // }
+    // else
+    // {
+    //     cout << "No valid transition found. Exiting." << endl;
+    //     return;
+    // }
 }
 vector<shared_ptr<State>> FSM::get_states()
 {
